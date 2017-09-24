@@ -11,7 +11,7 @@ reset: clean
 clean:
 	rm -f -r $(IOP_OBJS) $(IOP_BIN)
 
-include $(PS2SDK)/Defs.make
-include $(PS2SDK)/samples/Makefile.pref
-include $(PS2SDK)/samples/Makefile.iopglobal
+include $(PS2SDKUJ)/Defs.make
+include $(PS2SDKUJ)/samples/Makefile.pref
+include $(PS2SDKUJ)/samples/Makefile.iopglobal
 

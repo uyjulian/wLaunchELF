@@ -6,5 +6,5 @@ all: $(EE_LIB)
 clean:
 	rm -f $(EE_LIB) $(EE_OBJS)
 
-include $(PS2SDK)/samples/Makefile.pref
-include $(PS2SDK)/samples/Makefile.eeglobal
+include $(PS2SDKUJ)/samples/Makefile.pref
+include $(PS2SDKUJ)/samples/Makefile.eeglobal

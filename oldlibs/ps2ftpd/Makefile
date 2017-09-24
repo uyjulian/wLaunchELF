@@ -17,12 +17,12 @@ IOP_OBJS = obj/main.o obj/FileSystem.o obj/FtpServer.o obj/FtpClient.o obj/FtpCo
 IOP_CFLAGS += -Wall -fno-builtin
 # -DDEBUG
 IOP_LDFLAGS += -s
-IOP_INCS += -I$(PS2SDK)/iop/include
+IOP_INCS += -I$(PS2SDKUJ)/iop/include
 
 all: $(IOP_OBJS_DIR) $(IOP_BIN_DIR) $(IOP_BIN)
 
 clean:
 	rm -f -r $(IOP_OBJS_DIR) $(IOP_BIN_DIR)
 
-include $(PS2SDK)/Defs.make
+include $(PS2SDKUJ)/Defs.make
 include Rules.make
