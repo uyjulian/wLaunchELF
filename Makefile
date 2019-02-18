@@ -1,14 +1,14 @@
-.SILENT:
+#.SILENT:
 
 SMB = 0
 #set SMB to 1 to build uLe with smb support
 
-EE_BIN = BOOT.ELF
-EE_BIN_PKD = ULE.ELF
+EE_BIN = BOOT-UNC.ELF
+EE_BIN_PKD = BOOT.ELF
 EE_OBJS = main.o pad.o config.o elf.o draw.o loader_elf.o filer.o \
 	poweroff_irx.o iomanx_irx.o filexio_irx.o ps2atad_irx.o ps2dev9_irx.o ps2ip_irx.o\
 	ps2smap_irx.o ps2hdd_irx.o ps2fs_irx.o ps2netfs_irx.o usbd_irx.o usbhdfsd_irx.o mcman_irx.o mcserv_irx.o\
-	cdvd_irx.o ps2ftpd_irx.o ps2host_irx.o vmc_fs_irx.o fakehost_irx.o ps2kbd_irx.o\
+	cdvd_irx.o ps2ftpd_irx.o ps2host_irx.o vmc_fs_irx.o ps2kbd_irx.o\
 	hdd.o hdl_rpc.o hdl_info_irx.o editor.o timer.o jpgviewer.o icon.o lang.o\
 	font_uLE.o makeicon.o chkesr.o sior_irx.o allowdvdv_irx.o
 ifeq ($(SMB),1)
@@ -20,24 +20,34 @@ EE_INCS := -I$(PS2DEVUJ)/gsKit/include -I$(PS2SDKUJ)/ports/include -Ioldlibs/lib
 EE_LDFLAGS := -L$(PS2DEVUJ)/gsKit/lib -L$(PS2SDKUJ)/ports/lib -Loldlibs/libcdvd/lib 
 EE_LIBS = -lgskit -ldmakit -ljpeg -lpad -lmc -lhdd -lcdvdfs -lkbd -lmf \
 	-lcdvd -lc -lfileXio -lpatches -lpoweroff -ldebug -lc -lsior
+EE_CFLAGS := -mgpopt -G10240
+
 ifeq ($(SMB),1)
 	EE_CFLAGS += -DSMB
 endif
 
 .PHONY: all run reset clean rebuild
 
-all: $(EE_BIN_PKD)
+all: githash.h $(EE_BIN_PKD)
 
 $(EE_BIN_PKD): $(EE_BIN)
 	ps2-packer $< $@
 
 run: all
-	ps2client -h 192.168.0.10 -t 1 execee host:BOOT.ELF
+	ps2client -h 192.168.0.10 -t 1 execee host:$(EE_BIN)
 reset: clean
 	ps2client -h 192.168.0.10 reset
 
-mcman_irx.c: $(PS2SDKUJ)/iop/irx/mcman.irx
-	bin2c $< $@ mcman_irx
+githash.h:
+	printf '#ifndef ULE_VERDATE\n#define ULE_VERDATE "' > $@ && \
+	git show -s --format=%cd --date=local | tr -d "\n" >> $@ && \
+	printf '"\n#endif\n' >> $@
+	printf '#ifndef GIT_HASH\n#define GIT_HASH "' >> $@ && \
+	git rev-parse --short HEAD | tr -d "\n" >> $@ && \
+	printf '"\n#endif\n' >> $@
+
+mcman_irx.s: $(PS2SDKUJ)/iop/irx/mcman.irx
+	bin2s $< $@ mcman_irx
 
 mcserv_irx.c: $(PS2SDKUJ)/iop/irx/mcserv.irx
 	bin2c $< $@ mcserv_irx
@@ -90,9 +100,6 @@ ps2fs_irx.c: $(PS2SDKUJ)/iop/irx/ps2fs.irx
 ps2netfs_irx.c: $(PS2SDKUJ)/iop/irx/ps2netfs.irx
 	bin2c $< $@ ps2netfs_irx
 
-fakehost_irx.c: $(PS2SDKUJ)/iop/irx/fakehost.irx
-	bin2c $< $@ fakehost_irx
-
 hdl_info/hdl_info.irx: hdl_info
 	$(MAKE) -C $<
 
@@ -142,7 +149,7 @@ clean:
 	$(MAKE) -C AllowDVDV clean
 	$(MAKE) -C oldlibs/libcdvd clean
 	$(MAKE) -C oldlibs/ps2ftpd clean
-	rm -f *_irx.c *_elf.c $(EE_OBJS) $(EE_BIN) $(EE_BIN_PKD)
+	rm -f githash.h *_irx.c *_elf.c $(EE_OBJS) $(EE_BIN) $(EE_BIN_PKD)
 
 rebuild: clean all
 

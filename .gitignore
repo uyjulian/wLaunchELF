@@ -1,5 +1,6 @@
 *.a
 *.elf
+*.ELF
 *.erl
 *.exe
 *.o
@@ -9,3 +10,4 @@
 *.s
 *_irx.c
 *_elf.c
+githash.h
