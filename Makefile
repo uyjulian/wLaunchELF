@@ -15,9 +15,9 @@ ifeq ($(SMB),1)
 	EE_OBJS += smbman.o
 endif
 
-EE_INCS := -I$(PS2DEVUJ)/gsKit/include -I$(PS2SDKUJ)/ports/include -Ioldlibs/libcdvd/ee
+EE_INCS := -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include -Ioldlibs/libcdvd/ee
 
-EE_LDFLAGS := -L$(PS2DEVUJ)/gsKit/lib -L$(PS2SDKUJ)/ports/lib -Loldlibs/libcdvd/lib 
+EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -Loldlibs/libcdvd/lib 
 EE_LIBS = -lgskit -ldmakit -ljpeg -lpad -lmc -lhdd -lcdvdfs -lkbd -lmf \
 	-lcdvd -lc -lfileXio -lpatches -lpoweroff -ldebug -lc -lsior
 EE_CFLAGS := -mgpopt -G10240
@@ -46,16 +46,16 @@ githash.h:
 	git rev-parse --short HEAD | tr -d "\n" >> $@ && \
 	printf '"\n#endif\n' >> $@
 
-mcman_irx.s: $(PS2SDKUJ)/iop/irx/mcman.irx
+mcman_irx.s: $(PS2SDK)/iop/irx/mcman.irx
 	bin2s $< $@ mcman_irx
 
-mcserv_irx.c: $(PS2SDKUJ)/iop/irx/mcserv.irx
+mcserv_irx.c: $(PS2SDK)/iop/irx/mcserv.irx
 	bin2c $< $@ mcserv_irx
 
-usbd_irx.c: $(PS2SDKUJ)/iop/irx/usbd.irx
+usbd_irx.c: $(PS2SDK)/iop/irx/usbd.irx
 	bin2c $< $@ usbd_irx
 
-usbhdfsd_irx.c: $(PS2SDKUJ)/iop/irx/usbhdfsd.irx
+usbhdfsd_irx.c: $(PS2SDK)/iop/irx/usbhdfsd.irx
 	bin2c $< $@ usb_mass_irx
 
 oldlibs/libcdvd/lib/cdvd.irx: oldlibs/libcdvd
@@ -64,22 +64,22 @@ oldlibs/libcdvd/lib/cdvd.irx: oldlibs/libcdvd
 cdvd_irx.c: oldlibs/libcdvd/lib/cdvd.irx
 	bin2c $< $@ cdvd_irx
 
-poweroff_irx.c: $(PS2SDKUJ)/iop/irx/poweroff.irx
+poweroff_irx.c: $(PS2SDK)/iop/irx/poweroff.irx
 	bin2c $< $@ poweroff_irx
 
-iomanx_irx.c: $(PS2SDKUJ)/iop/irx/iomanX.irx
+iomanx_irx.c: $(PS2SDK)/iop/irx/iomanX.irx
 	bin2c $< $@ iomanx_irx
 
-filexio_irx.c: $(PS2SDKUJ)/iop/irx/fileXio.irx
+filexio_irx.c: $(PS2SDK)/iop/irx/fileXio.irx
 	bin2c $< $@ filexio_irx
 
-ps2dev9_irx.c: $(PS2SDKUJ)/iop/irx/ps2dev9.irx
+ps2dev9_irx.c: $(PS2SDK)/iop/irx/ps2dev9.irx
 	bin2c $< $@ ps2dev9_irx
 
-ps2ip_irx.c: $(PS2SDKUJ)/iop/irx/ps2ip.irx
+ps2ip_irx.c: $(PS2SDK)/iop/irx/ps2ip.irx
 	bin2c $< $@ ps2ip_irx
 
-ps2smap_irx.c: $(PS2DEVUJ)/ps2eth/smap/ps2smap.irx
+ps2smap_irx.c: $(PS2DEV)/ps2eth/smap/ps2smap.irx
 	bin2c $< $@ ps2smap_irx
 
 oldlibs/ps2ftpd/bin/ps2ftpd.irx: oldlibs/ps2ftpd
@@ -88,16 +88,16 @@ oldlibs/ps2ftpd/bin/ps2ftpd.irx: oldlibs/ps2ftpd
 ps2ftpd_irx.c: oldlibs/ps2ftpd/bin/ps2ftpd.irx
 	bin2c $< $@ ps2ftpd_irx
 
-ps2atad_irx.c: $(PS2SDKUJ)/iop/irx/ps2atad.irx
+ps2atad_irx.c: $(PS2SDK)/iop/irx/ps2atad.irx
 	bin2c $< $@ ps2atad_irx
 
-ps2hdd_irx.c: $(PS2SDKUJ)/iop/irx/ps2hdd-osd.irx
+ps2hdd_irx.c: $(PS2SDK)/iop/irx/ps2hdd-osd.irx
 	bin2c $< $@ ps2hdd_irx
 
-ps2fs_irx.c: $(PS2SDKUJ)/iop/irx/ps2fs.irx
+ps2fs_irx.c: $(PS2SDK)/iop/irx/ps2fs.irx
 	bin2c $< $@ ps2fs_irx
 
-ps2netfs_irx.c: $(PS2SDKUJ)/iop/irx/ps2netfs.irx
+ps2netfs_irx.c: $(PS2SDK)/iop/irx/ps2netfs.irx
 	bin2c $< $@ ps2netfs_irx
 
 hdl_info/hdl_info.irx: hdl_info
@@ -113,7 +113,7 @@ ps2host_irx.c: ps2host/ps2host.irx
 	bin2c $< $@ ps2host_irx
 
 ifeq ($(SMB),1)
-smbman_irx.c: $(PS2SDKUJ)/iop/irx/smbman.irx
+smbman_irx.c: $(PS2SDK)/iop/irx/smbman.irx
 	bin2c $< $@ smbman_irx
 endif
 
@@ -129,10 +129,10 @@ loader/loader.elf: loader
 loader_elf.c: loader/loader.elf
 	bin2c $< $@ loader_elf
 
-ps2kbd_irx.c: $(PS2SDKUJ)/iop/irx/ps2kbd.irx
+ps2kbd_irx.c: $(PS2SDK)/iop/irx/ps2kbd.irx
 	bin2c $< $@ ps2kbd_irx
 
-sior_irx.c: $(PS2SDKUJ)/iop/irx/sior.irx
+sior_irx.c: $(PS2SDK)/iop/irx/sior.irx
 	bin2c $< $@ sior_irx
 
 AllowDVDV/AllowDVDV.irx: AllowDVDV
@@ -153,5 +153,5 @@ clean:
 
 rebuild: clean all
 
-include $(PS2SDKUJ)/samples/Makefile.pref
-include $(PS2SDKUJ)/samples/Makefile.eeglobal
+include $(PS2SDK)/samples/Makefile.pref
+include $(PS2SDK)/samples/Makefile.eeglobal

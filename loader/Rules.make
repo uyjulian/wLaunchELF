@@ -9,7 +9,7 @@
 EE_CC_VERSION := $(shell $(EE_CC) --version 2>&1 | sed -n 's/^.*(GCC) //p')
 
 # Include directories
-EE_INCS := -I$(PS2SDKUJ)/ee/include -I$(PS2SDKUJ)/common/include -I. $(EE_INCS)
+EE_INCS := -I$(PS2SDK)/ee/include -I$(PS2SDK)/common/include -I. $(EE_INCS)
 
 # C compiler flags
 EE_CFLAGS := -D_EE -O2 -G0 -Wall $(EE_CFLAGS)
@@ -18,7 +18,7 @@ EE_CFLAGS := -D_EE -O2 -G0 -Wall $(EE_CFLAGS)
 EE_CXXFLAGS := -D_EE -O2 -G0 -Wall $(EE_CXXFLAGS)
 
 # Linker flags
-EE_LDFLAGS := -L$(PS2SDKUJ)/ee/lib $(EE_LDFLAGS)
+EE_LDFLAGS := -L$(PS2SDK)/ee/lib $(EE_LDFLAGS)
 
 # Assembler flags
 EE_ASFLAGS := -G0 $(EE_ASFLAGS)
@@ -62,9 +62,9 @@ endif
 %.o: %.s
 	$(EE_AS) $(EE_ASFLAGS) $< -o $@
 
-$(EE_BIN): $(EE_OBJS) $(PS2SDKUJ)/ee/startup/crt0.o
-	$(EE_CC) $(EE_NO_CRT) -T$(PS2SDKUJ)/ee/startup/linkfile $(EE_CFLAGS) \
-		-o $(EE_BIN) $(PS2SDKUJ)/ee/startup/crt0.o $(CRTI_OBJ) $(CRTBEGIN_OBJ) $(EE_OBJS) $(CRTEND_OBJ) $(CRTN_OBJ) $(EE_LDFLAGS) $(EE_LIBS)
+$(EE_BIN): $(EE_OBJS) $(PS2SDK)/ee/startup/crt0.o
+	$(EE_CC) $(EE_NO_CRT) -T$(PS2SDK)/ee/startup/linkfile $(EE_CFLAGS) \
+		-o $(EE_BIN) $(PS2SDK)/ee/startup/crt0.o $(CRTI_OBJ) $(CRTBEGIN_OBJ) $(EE_OBJS) $(CRTEND_OBJ) $(CRTN_OBJ) $(EE_LDFLAGS) $(EE_LIBS)
 
 $(EE_ERL): $(EE_OBJS)
 	$(EE_CC) $(EE_NO_CRT) -o $(EE_ERL) $(EE_OBJS) $(EE_CFLAGS) $(EE_LDFLAGS) -Wl,-r -Wl,-d
