@@ -26,6 +26,8 @@ ifeq ($(SMB),1)
 	EE_CFLAGS += -DSMB
 endif
 
+BIN2C = $(PS2SDK)/bin/bin2c
+
 .PHONY: all run reset clean rebuild
 
 all: githash.h $(EE_BIN_PKD)
@@ -46,100 +48,100 @@ githash.h:
 	git rev-parse --short HEAD | tr -d "\n" >> $@ && \
 	printf '"\n#endif\n' >> $@
 
-mcman_irx.s: $(PS2SDK)/iop/irx/mcman.irx
-	bin2s $< $@ mcman_irx
+mcman_irx.c: $(PS2SDK)/iop/irx/mcman.irx
+	$(BIN2C) $< $@ mcman_irx
 
 mcserv_irx.c: $(PS2SDK)/iop/irx/mcserv.irx
-	bin2c $< $@ mcserv_irx
+	$(BIN2C) $< $@ mcserv_irx
 
 usbd_irx.c: $(PS2SDK)/iop/irx/usbd.irx
-	bin2c $< $@ usbd_irx
+	$(BIN2C) $< $@ usbd_irx
 
 usbhdfsd_irx.c: $(PS2SDK)/iop/irx/usbhdfsd.irx
-	bin2c $< $@ usb_mass_irx
+	$(BIN2C) $< $@ usb_mass_irx
 
 oldlibs/libcdvd/lib/cdvd.irx: oldlibs/libcdvd
 	$(MAKE) -C $<
 
 cdvd_irx.c: oldlibs/libcdvd/lib/cdvd.irx
-	bin2c $< $@ cdvd_irx
+	$(BIN2C) $< $@ cdvd_irx
 
 poweroff_irx.c: $(PS2SDK)/iop/irx/poweroff.irx
-	bin2c $< $@ poweroff_irx
+	$(BIN2C) $< $@ poweroff_irx
 
 iomanx_irx.c: $(PS2SDK)/iop/irx/iomanX.irx
-	bin2c $< $@ iomanx_irx
+	$(BIN2C) $< $@ iomanx_irx
 
 filexio_irx.c: $(PS2SDK)/iop/irx/fileXio.irx
-	bin2c $< $@ filexio_irx
+	$(BIN2C) $< $@ filexio_irx
 
 ps2dev9_irx.c: $(PS2SDK)/iop/irx/ps2dev9.irx
-	bin2c $< $@ ps2dev9_irx
+	$(BIN2C) $< $@ ps2dev9_irx
 
 ps2ip_irx.c: $(PS2SDK)/iop/irx/ps2ip.irx
-	bin2c $< $@ ps2ip_irx
+	$(BIN2C) $< $@ ps2ip_irx
 
 ps2smap_irx.c: $(PS2DEV)/ps2eth/smap/ps2smap.irx
-	bin2c $< $@ ps2smap_irx
+	$(BIN2C) $< $@ ps2smap_irx
 
 oldlibs/ps2ftpd/bin/ps2ftpd.irx: oldlibs/ps2ftpd
 	$(MAKE) -C $<
 
 ps2ftpd_irx.c: oldlibs/ps2ftpd/bin/ps2ftpd.irx
-	bin2c $< $@ ps2ftpd_irx
+	$(BIN2C) $< $@ ps2ftpd_irx
 
 ps2atad_irx.c: $(PS2SDK)/iop/irx/ps2atad.irx
-	bin2c $< $@ ps2atad_irx
+	$(BIN2C) $< $@ ps2atad_irx
 
 ps2hdd_irx.c: $(PS2SDK)/iop/irx/ps2hdd-osd.irx
-	bin2c $< $@ ps2hdd_irx
+	$(BIN2C) $< $@ ps2hdd_irx
 
 ps2fs_irx.c: $(PS2SDK)/iop/irx/ps2fs.irx
-	bin2c $< $@ ps2fs_irx
+	$(BIN2C) $< $@ ps2fs_irx
 
 ps2netfs_irx.c: $(PS2SDK)/iop/irx/ps2netfs.irx
-	bin2c $< $@ ps2netfs_irx
+	$(BIN2C) $< $@ ps2netfs_irx
 
 hdl_info/hdl_info.irx: hdl_info
 	$(MAKE) -C $<
 
 hdl_info_irx.c: hdl_info/hdl_info.irx
-	bin2c $< $@ hdl_info_irx
+	$(BIN2C) $< $@ hdl_info_irx
 
 ps2host/ps2host.irx: ps2host
 	$(MAKE) -C $<
 
 ps2host_irx.c: ps2host/ps2host.irx
-	bin2c $< $@ ps2host_irx
+	$(BIN2C) $< $@ ps2host_irx
 
 ifeq ($(SMB),1)
 smbman_irx.c: $(PS2SDK)/iop/irx/smbman.irx
-	bin2c $< $@ smbman_irx
+	$(BIN2C) $< $@ smbman_irx
 endif
 
 vmc_fs/vmc_fs.irx: vmc_fs
 	$(MAKE) -C $<
 
 vmc_fs_irx.c: vmc_fs/vmc_fs.irx
-	bin2c $< $@ vmc_fs_irx
+	$(BIN2C) $< $@ vmc_fs_irx
 
 loader/loader.elf: loader
 	$(MAKE) -C $<
 
 loader_elf.c: loader/loader.elf
-	bin2c $< $@ loader_elf
+	$(BIN2C) $< $@ loader_elf
 
 ps2kbd_irx.c: $(PS2SDK)/iop/irx/ps2kbd.irx
-	bin2c $< $@ ps2kbd_irx
+	$(BIN2C) $< $@ ps2kbd_irx
 
 sior_irx.c: $(PS2SDK)/iop/irx/sior.irx
-	bin2c $< $@ sior_irx
+	$(BIN2C) $< $@ sior_irx
 
 AllowDVDV/AllowDVDV.irx: AllowDVDV
 	$(MAKE) -C $<
 
 allowdvdv_irx.c: AllowDVDV/AllowDVDV.irx
-	bin2c $< $@ allowdvdv_irx
+	$(BIN2C) $< $@ allowdvdv_irx
 
 clean:
 	$(MAKE) -C hdl_info clean
