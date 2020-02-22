@@ -8,6 +8,4 @@
 *.tmp
 *.irx
 *.s
-*_irx.c
-*_elf.c
 githash.h
