@@ -26,7 +26,7 @@ ifeq ($(SMB),1)
 	EE_CFLAGS += -DSMB
 endif
 
-BIN2S = $(PS2SDK)/bin/bin2S
+BIN2S = $(PS2SDK)/bin/bin2s
 
 .PHONY: all run reset clean rebuild
 
