@@ -212,6 +212,7 @@ void load_vmc_fs(void);
 void load_ps2host(void);
 void loadHddModules(void);
 void loadHdlInfoModule(void);
+void Reset(int should_reload, int compat_mode);
 int uLE_related(char *pathout, const char *pathin);
 int uLE_InitializeRegion(void);
 int uLE_cdDiscValid(void);

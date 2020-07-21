@@ -130,7 +130,9 @@ static u8 have_ps2atad = 0;
 static u8 have_ps2hdd = 0;
 static u8 have_ps2fs = 0;
 static u8 have_ps2netfs = 0;
+#ifdef SMB
 static u8 have_smbman = 0;
+#endif
 static u8 have_vmc_fs = 0;
 //State of whether DEV9 was successfully loaded or not.
 static u8 ps2dev9_loaded = 0;
@@ -212,7 +214,7 @@ static void load_smbman(void);
 static void ShowDebugInfo(void);
 static void load_ps2ftpd(void);
 static void load_ps2netfs(void);
-static void loadBasicModules(void);
+static void loadBasicModules(int compat_mode);
 static void loadCdModules(void);
 static int loadExternalFile(char *argPath, void **fileBaseP, int *fileSizeP);
 static int loadExternalModule(char *modPath, void *defBase, int defSize);
@@ -235,7 +237,6 @@ static void incConfig(void);
 static int exists(char *path);
 static void CleanUp(void);
 static void Execute(char *pathin);
-static void Reset(void);
 static void InitializeBootExecPath();
 //---------------------------------------------------------------------------
 //executable code
@@ -910,7 +911,7 @@ static void load_ps2netfs(void)
 //------------------------------
 //endfunc load_ps2netfs
 //---------------------------------------------------------------------------
-static void loadBasicModules(void)
+static void loadBasicModules(int compat_mode)
 {
 	int ret;
 
@@ -919,7 +920,11 @@ static void loadBasicModules(void)
 
 	SifExecModuleBuffer(allowdvdv_irx, size_allowdvdv_irx, 0, NULL, &ret);  //unlocks cdvd for reading on psx dvr
 
-	SifExecModuleBuffer(sio2man_irx, size_sio2man_irx, 0, NULL, &ret);
+	if (compat_mode) {
+		SifLoadModule("rom0:SIO2MAN", 0, NULL);
+	} else {
+		SifExecModuleBuffer(sio2man_irx, size_sio2man_irx, 0, NULL, &ret);
+	}
 
 #ifdef SIO_DEBUG
 	int id;
@@ -936,7 +941,11 @@ static void loadBasicModules(void)
 
 	SifExecModuleBuffer(mcman_irx, size_mcman_irx, 0, NULL, &ret);
 	SifExecModuleBuffer(mcserv_irx, size_mcserv_irx, 0, NULL, &ret);
-	SifExecModuleBuffer(padman_irx, size_padman_irx, 0, NULL, &ret);
+	if (compat_mode) {
+		SifLoadModule("rom0:PADMAN", 0, NULL);
+	} else {
+		SifExecModuleBuffer(padman_irx, size_padman_irx, 0, NULL, &ret);
+	}
 }
 //------------------------------
 //endfunc loadBasicModules
@@ -2007,7 +2016,7 @@ Recurse_for_ESR:  //Recurse here for PS2Disc command with ESR disc
 //---------------------------------------------------------------------------
 // reboot IOP (original source by Hermes in BOOT.c - cogswaploader)
 // dlanor: but changed now, as the original was badly bugged
-static void Reset()
+void Reset(int should_reload, int compat_mode)
 {
 	SifInitRpc(0);
 	while (!SifIopReset("", 0)) {
@@ -2018,26 +2027,101 @@ static void Reset()
 	SifLoadFileInit();
 	initsbv_patches();
 
+	int old_have_cdvd = have_cdvd;
+	int old_have_usbd = have_usbd;
+	int old_have_usb_mass = have_usb_mass;
+	int old_have_ps2ip = have_ps2ip;
+	int old_have_ps2smap = have_ps2smap;
+	int old_have_ps2host = have_ps2host;
+	int old_have_vmc_fs = have_vmc_fs;
+#ifdef SMB
+	int old_have_smbman = have_smbman;
+#endif
+	int old_have_ps2ftpd = have_ps2ftpd;
+	int old_have_ps2netfs = have_ps2netfs;
+	int old_have_ps2kbd = have_ps2kbd;
+	int old_have_ps2atad = have_ps2atad;
+	int old_have_ps2hdd = have_ps2hdd;
+	int old_have_ps2fs = have_ps2fs;
+	int old_have_poweroff = have_poweroff;
+
 	have_cdvd = 0;
 	have_usbd = 0;
 	have_usb_mass = 0;
+	have_ps2ip = 0;
 	have_ps2smap = 0;
 	have_ps2host = 0;
 	have_vmc_fs = 0;
+#ifdef SMB
 	have_smbman = 0;
+#endif
 	have_ps2ftpd = 0;
+	have_ps2netfs = 0;
 	have_ps2kbd = 0;
+	ps2kbd_opened = 0;
+	have_ps2dev9 = 0;
+	ps2dev9_loaded = 0;
+	have_ps2atad = 0;
+	have_ps2hdd = 0;
+	have_ps2fs = 0;
+	have_hdl_info = 0;
+	have_poweroff = 0;
+	done_setupPowerOff = 0;
 	have_NetModules = 0;
 	have_HDD_modules = 0;
 
-	loadBasicModules();
+	loadBasicModules(compat_mode);
 	loadCdModules();
 
 	fileXioInit();
 	//Increase the FILEIO R/W buffer size to reduce overhead.
 	fileXioSetRWBufferSize(128 * 1024);
-	mcInit(MC_TYPE_XMC);
+	if (compat_mode) {
+		mcInit(MC_TYPE_MC);
+	} else {
+		mcInit(MC_TYPE_XMC);
+	}
 	//	setupPad();
+	if (should_reload) {
+		if (old_have_cdvd) {
+			loadCdModules();
+		}
+		if (old_have_usbd) {
+			loadUsbDModule();
+		}
+		if (old_have_usb_mass) {
+			loadUsbModules();
+		}
+		if (old_have_ps2ip || old_have_ps2smap) {
+			load_ps2ip();
+		}
+		if (old_have_ps2host) {
+			load_ps2host();
+		}
+		if (old_have_vmc_fs) {
+			load_vmc_fs();
+		}
+#ifdef SMB
+		if (old_have_smbman) {
+			load_smbman();
+		}
+#endif
+		if (old_have_ps2ftpd) {
+			load_ps2ftpd();
+		}
+		if (old_have_ps2netfs) {
+			load_ps2netfs();
+		}
+		if (old_have_ps2kbd) {
+			loadKbdModules();
+		}
+		if (old_have_ps2atad || old_have_ps2hdd || old_have_ps2fs) {
+			load_ps2atad();
+		}
+		if (old_have_poweroff) {
+			setupPowerOff();
+		}
+	}
 }
 //------------------------------
 //endfunc Reset
@@ -2155,7 +2239,7 @@ int main(int argc, char *argv[])
 	for (i = 0; (i < argc) && (i < 8); i++)
 		boot_argv[i] = argv[i];
 
-	Reset();
+	Reset(0, 0);
 	Init_Default_Language();
 
 	LaunchElfDir[0] = 0;
