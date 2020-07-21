@@ -374,6 +374,8 @@ lang(0, Net_Config, "Net Config")
     //---------------------------------------------------------------------------
     // New status message for HDD information read, when there are too many partitions.
     lang(326, HDD_Information_Read_Overflow, "HDD Information Read (truncated)")
+    // New status message for rebooting the IOP in compatibility mode
+    lang(327, Rebooting_IOP_Compatible, "Rebooting the IOP in compatibility mode...")
     //---------------------------------------------------------------------------
     //End of file:  lang.h
     //---------------------------------------------------------------------------

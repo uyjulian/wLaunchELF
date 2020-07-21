@@ -1999,6 +1999,11 @@ Recurse_for_ESR:  //Recurse here for PS2Disc command with ESR disc
 		if ((t = checkELFheader(fullpath)) <= 0)
 			goto ELFnotFound;
 	ELFchecked:
+		if ((strncmp(party, "hdd0:", 5)) || (strncmp(fullpath, "pfs0:", 5))) {
+			drawMsg(LNG(Rebooting_IOP_Compatible));
+			// Reset the IOP so that it is compatible with old software that does not reset the IOP
+			Reset(1, 1);
+		}
 		CleanUp();
 		RunLoaderElf(fullpath, party);
 	} else {  //Invalid path
