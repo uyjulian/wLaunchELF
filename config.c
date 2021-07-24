@@ -2141,8 +2141,8 @@ static void Config_Network(void)
 			y += FONT_HEIGHT / 2;
 
 			len = (strlen(LNG(IP_Address)) + 5 > strlen(LNG(Netmask)) + 5) ?
-			          strlen(LNG(IP_Address)) + 5 :
-			          strlen(LNG(Netmask)) + 5;
+                      strlen(LNG(IP_Address)) + 5 :
+                      strlen(LNG(Netmask)) + 5;
 			len = (len > strlen(LNG(Gateway)) + 5) ? len : strlen(LNG(Gateway)) + 5;
 			sprintf(c, "%s:", LNG(IP_Address));
 			printXY(c, x + 2 * FONT_WIDTH, y, setting->color[COLOR_TEXT], TRUE, 0);

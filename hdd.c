@@ -347,8 +347,8 @@ int MenuParty(PARTYINFO Info)
 	int event, post_event = 0;
 
 	int menu_len = strlen(LNG(Create)) > strlen(LNG(Remove)) ?
-	                   strlen(LNG(Create)) :
-	                   strlen(LNG(Remove));
+                       strlen(LNG(Create)) :
+                       strlen(LNG(Remove));
 	menu_len = strlen(LNG(Rename)) > menu_len ? strlen(LNG(Rename)) : menu_len;
 	menu_len = strlen(LNG(Expand)) > menu_len ? strlen(LNG(Expand)) : menu_len;
 	menu_len = strlen(LNG(Format)) > menu_len ? strlen(LNG(Format)) : menu_len;

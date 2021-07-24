@@ -274,7 +274,8 @@ int FileSystem_ReadDir(FSContext *pContext, FSFileInfo *pInfo)
 	if (stat(buffer, &s) < 0)
 		return -1;
 
-	pInfo->m_eType = S_ISDIR(s.st_mode) ? FT_DIRECTORY : S_ISLNK(s.st_mode) ? FT_LINK : FT_FILE;
+	pInfo->m_eType = S_ISDIR(s.st_mode) ? FT_DIRECTORY : S_ISLNK(s.st_mode) ? FT_LINK :
+                                                                              FT_FILE;
 	pInfo->m_iSize = s.st_size;
 
 	t = localtime(&s.st_mtime);

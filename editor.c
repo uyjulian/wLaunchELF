@@ -117,8 +117,8 @@ static int MenuEditor(void)
 	int event, post_event = 0;
 
 	int menu_len = strlen(LNG(New)) > strlen(LNG(Open)) ?
-	                   strlen(LNG(New)) :
-	                   strlen(LNG(Open));
+                       strlen(LNG(New)) :
+                       strlen(LNG(Open));
 	menu_len = strlen(LNG(Close)) > menu_len ? strlen(LNG(Close)) : menu_len;
 	menu_len = strlen(LNG(Save)) > menu_len ? strlen(LNG(Save)) : menu_len;
 	menu_len = strlen(LNG(Save_As)) > menu_len ? strlen(LNG(Save_As)) : menu_len;

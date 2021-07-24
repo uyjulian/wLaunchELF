@@ -580,7 +580,8 @@ void FtpClient_OnDataWrite(FtpClient *pClient)
 					char size[21] = " ";
 
 					/* UNIX-style LIST format */
-					strcat(buffer, (FT_DIRECTORY == pInfo->m_eType) ? "d" : (FT_LINK == pInfo->m_eType) ? "l" : "-");
+					strcat(buffer, (FT_DIRECTORY == pInfo->m_eType) ? "d" : (FT_LINK == pInfo->m_eType) ? "l" :
+                                                                                                          "-");
 					for (i = 0; i < 9; i++) {
 						if (pInfo->m_iProtection & (1 << (8 - i))) {
 							switch (i % 3) {

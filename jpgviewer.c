@@ -31,32 +31,32 @@ static void Command_List(void)
 	int event, post_event = 0;
 
 	int command_len = strlen(LNG(Start_StartStop_Slideshow)) > strlen(LNG(Start_StartStop_Slideshow)) ?
-	                      strlen(LNG(Start_StartStop_Slideshow)) :
-	                      strlen(LNG(Start_StartStop_Slideshow));
+                          strlen(LNG(Start_StartStop_Slideshow)) :
+                          strlen(LNG(Start_StartStop_Slideshow));
 	command_len = strlen(LNG(L1R1_Slideshow_Timer)) > command_len ?
-	                  strlen(LNG(L1R1_Slideshow_Timer)) :
-	                  command_len;
+                      strlen(LNG(L1R1_Slideshow_Timer)) :
+                      command_len;
 	command_len = strlen(LNG(L2R2_Slideshow_Transition)) > command_len ?
-	                  strlen(LNG(L2R2_Slideshow_Transition)) :
-	                  command_len;
+                      strlen(LNG(L2R2_Slideshow_Transition)) :
+                      command_len;
 	command_len = strlen(LNG(LeftRight_Pad_PrevNext_Picture)) > command_len ?
-	                  strlen(LNG(LeftRight_Pad_PrevNext_Picture)) :
-	                  command_len;
+                      strlen(LNG(LeftRight_Pad_PrevNext_Picture)) :
+                      command_len;
 	command_len = strlen(LNG(UpDown_Pad_Rotate_Picture)) > command_len ?
-	                  strlen(LNG(UpDown_Pad_Rotate_Picture)) :
-	                  command_len;
+                      strlen(LNG(UpDown_Pad_Rotate_Picture)) :
+                      command_len;
 	command_len = strlen(LNG(Left_Joystick_Panorama)) > command_len ?
-	                  strlen(LNG(Left_Joystick_Panorama)) :
-	                  command_len;
+                      strlen(LNG(Left_Joystick_Panorama)) :
+                      command_len;
 	command_len = strlen(LNG(Right_Joystick_Vertical_Zoom)) > command_len ?
-	                  strlen(LNG(Right_Joystick_Vertical_Zoom)) :
-	                  command_len;
+                      strlen(LNG(Right_Joystick_Vertical_Zoom)) :
+                      command_len;
 	command_len = strlen(LNG(FullScreen_Mode)) + 3 > command_len ?
-	                  strlen(LNG(FullScreen_Mode)) + 3 :
-	                  command_len;
+                      strlen(LNG(FullScreen_Mode)) + 3 :
+                      command_len;
 	command_len = strlen(LNG(Exit_To_Jpg_Browser)) + 3 > command_len ?
-	                  strlen(LNG(Exit_To_Jpg_Browser)) + 3 :
-	                  command_len;
+                      strlen(LNG(Exit_To_Jpg_Browser)) + 3 :
+                      command_len;
 
 	int Command_ch_w = command_len + 1;                                           //Total characters in longest Command Name.
 	int Command_ch_h = 9;                                                         //Total Command lines number.
