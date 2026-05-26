@@ -2,6 +2,7 @@
 // File name:    elf.c
 //--------------------------------------------------------------
 #include "launchelf.h"
+#include <elf-loader.h>
 
 #define MAX_PATH 1025
 
@@ -124,12 +125,15 @@ error:
 //------------------------------
 void RunLoaderElf(char *filename, char *party)
 {
+#if 0
     u8 *boot_elf;
     elf_header_t *eh;
     elf_pheader_t *eph;
     const void *pdata;
     int i;
     char *argv[2], bootpath[256];
+#endif
+
 
     if ((!strncmp(party, "hdd0:", 5))) {
         if (0 > fileXioMount("pfs0:", party, FIO_MT_RDONLY)) {
@@ -139,6 +143,7 @@ void RunLoaderElf(char *filename, char *party)
                 return;  // If it still fails, we have to give up...
         }
 
+#if 0
         // If a path to a file on PFS is specified, change it to the standard format.
         // hdd0:partition:pfs:path/to/file
         if (strncmp(filename, "pfs0:", 5) == 0) {
@@ -149,6 +154,7 @@ void RunLoaderElf(char *filename, char *party)
 
         argv[0] = filename;
         argv[1] = bootpath;
+#endif
     } else if ((!strncmp(party, "dvr_hdd0:", 9))) {
         if (0 > fileXioMount("dvr_pfs0:", party, FIO_MT_RDONLY)) {
             // Some error occurred, it could be due to something else having used pfs0
@@ -157,6 +163,7 @@ void RunLoaderElf(char *filename, char *party)
                 return;  // If it still fails, we have to give up...
         }
 
+#if 0
         // If a path to a file on PFS is specified, change it to the standard format.
         // dvr_hdd0:partition:pfs:path/to/file
         if (strncmp(filename, "dvr_pfs0:", 9) == 0) {
@@ -167,11 +174,17 @@ void RunLoaderElf(char *filename, char *party)
 
         argv[0] = filename;
         argv[1] = bootpath;
+#endif
     } else {
+#if 0
         argv[0] = filename;
         argv[1] = filename;
+#endif
     }
 
+    LoadELFFromFileWithPartition(filename, party, 0, NULL);
+    exit(126);
+#if 0
     /* NB: LOADER.ELF is embedded  */
     boot_elf = (u8 *)loader_elf;
     eh = (elf_header_t *)boot_elf;
@@ -200,6 +213,7 @@ void RunLoaderElf(char *filename, char *party)
     FlushCache(2);
 
     ExecPS2((void *)eh->entry, NULL, 2, argv);
+#endif
 }
 //------------------------------
 // End of func:  void RunLoaderElf(char *filename, char *party)
