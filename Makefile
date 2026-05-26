@@ -27,7 +27,7 @@ EE_INCS := -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include
 
 EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -s
 EE_LIBS = -lgskit -ldmakit -ljpeg_ps2_addons -ljpeg -lpad -lmc -lhdd -lkbd -lm \
-	-lcdvd -lfileXio -lpatches -lpoweroff -ldebug -lsior
+	-lcdvd -lfileXio -lpatches -lpoweroff -ldebug -lsior -lelf-loader2
 EE_CFLAGS := -mno-gpopt -G0
 
 ifeq ($(SIO_DEBUG),1)
